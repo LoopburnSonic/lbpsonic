@@ -4,8 +4,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Coins, Flame, Receipt, Lock, Loader2 } from "lucide-react"
 import LiquidityVisualization from "@/components/LiquidityVisualization"
 import BurnedTokensCard from "@/components/BurnedTokensCard"
+import TokenDistributionCard from "@/components/TokenDistributionCard"
+import ProtocolOwnedLiquidityCard from "@/components/ProtocolOwnedLiquidityCard"
 import HoldersVisualization from "@/components/HoldersVisualization"
-import TokenSupplyCard from "@/components/TokenSupplyCard"
 import { useTokenData } from "@/hooks/use-token-data"
 import { formatUnits } from "viem"
 
@@ -13,13 +14,13 @@ export default function TokenInformation() {
   const { tokenData, isLoading, error, hasTokenData } = useTokenData();
   return (
     <Card className="w-full sm:w-4/5 mx-auto bg-transparent border-0">
-      <CardContent className="px-2 sm:px-6">
-        <div className="grid gap-4 sm:gap-8 mt-2 sm:mt-4">
+      <CardContent className="px-4 sm:px-6">
+        <div className="grid gap-8 sm:gap-8 mt-0 sm:mt-4">
 
           {/* Token Details Section - MOVED AND RESTYLED */}
-          <div className="mt-2 sm:mt-4 mb-2">
+          <div className="mb-6 sm:mb-2">
             <Card> {/* Added Card component for background and border */}
-              <CardContent className="py-3 sm:py-4 px-3 sm:px-6"> {/* Added CardContent and adjusted padding */}
+              <CardContent className="py-4 sm:py-4 px-4 sm:px-6"> {/* Added CardContent and adjusted padding */}
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2 py-2">
                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -35,8 +36,8 @@ export default function TokenInformation() {
                       <Coins className="h-4 w-4 text-blue-500" />
                       <span>
                         {hasTokenData && tokenData
-                          ? `${Number(formatUnits(tokenData.totalSupply, tokenData.decimals)).toLocaleString()} ${tokenData.symbol}`
-                          : '1,000,000 LPB'
+                          ? `${Number(formatUnits(tokenData.maxTotalSupply, tokenData.decimals)).toLocaleString()} ${tokenData.symbol} Max`
+                          : 'Loading supply...'
                         }
                       </span>
                     </li>
@@ -50,7 +51,12 @@ export default function TokenInformation() {
                     </li>
                     <li className="flex items-center gap-2">
                       <Flame className="h-4 w-4 text-red-500" />
-                      <span>Deflationary Burns</span>
+                      <span>
+                        {hasTokenData && tokenData
+                          ? `${tokenData.burnedPercentage.toFixed(2)}% Burned`
+                          : 'Loading burns...'
+                        }
+                      </span>
                     </li>
                   </ul>
                 )}
@@ -59,15 +65,16 @@ export default function TokenInformation() {
           </div>
 
           {/* Holders Visualization */}
-          <div className="mt-4 sm:mt-8">
+          <div>
             <HoldersVisualization />
           </div>
 
-          {/* New Visualizations Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mt-4 sm:mt-8">
+          {/* Cards Grid - 2x2 Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-12 sm:gap-8 lg:gap-12">
             <LiquidityVisualization />
+            <ProtocolOwnedLiquidityCard />
+            <TokenDistributionCard />
             <BurnedTokensCard />
-            <TokenSupplyCard />
           </div>
 
         </div>

@@ -1,54 +1,30 @@
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card"
-import { PieChart, Users, Droplets, Flame, Loader2 } from "lucide-react"
+import { PieChart, Users, Droplets, Loader2, TrendingUp } from "lucide-react"
 import { useTokenData } from "@/hooks/use-token-data"
 import { formatUnits } from "viem"
 
-export default function TokenSupplyCard() {
+export default function TokenDistributionCard() {
   const { tokenData, liquidityData, isLoading, error, hasTokenData, hasLiquidityData } = useTokenData();
 
-  // Calculate supply distribution when we have real data
+  // Calculate supply distribution ONLY with real data - NO FALLBACKS
   const getSupplyData = () => {
-    if (!hasTokenData || !tokenData) {
-      // Fallback static data
-      return [
-        {
-          label: "LP Supply",
-          percentage: 10,
-          value: "100,000 LPB",
-          color: "from-blue-500 to-cyan-500",
-          bgColor: "bg-blue-900/30",
-          icon: Droplets,
-          iconColor: "text-blue-400"
-        },
-        {
-          label: "Holder Supply",
-          percentage: 90,
-          value: "900,000 LPB",
-          color: "from-green-500 to-emerald-500",
-          bgColor: "bg-green-900/30",
-          icon: Users,
-          iconColor: "text-green-400"
-        }
-      ];
+    if (!hasTokenData || !tokenData || !hasLiquidityData || !liquidityData) {
+      return null; // Return null instead of fallback data
     }
 
-    // Calculate real percentages
-    const totalSupplyNum = Number(formatUnits(tokenData.totalSupply, tokenData.decimals));
-    const burnedTokensNum = Number(formatUnits(tokenData.burnedTokens, tokenData.decimals));
+    // Calculate real percentages using ONLY real contract data
+    const maxSupplyNum = Number(formatUnits(tokenData.maxTotalSupply, tokenData.decimals));
     const currentSupplyNum = Number(formatUnits(tokenData.currentSupply, tokenData.decimals));
 
-    // Estimate LP supply (this would need to be fetched from the pool)
-    const lpSupplyNum = hasLiquidityData && liquidityData
-      ? Number(formatUnits(liquidityData.token0Balance, 18)) // Assuming token0 is LPB
-      : totalSupplyNum * 0.05; // 5% estimate
-
+    // Get real LP supply from liquidity data
+    const lpSupplyNum = Number(formatUnits(liquidityData.token0Balance, 18)); // Assuming token0 is LBP
     const holderSupplyNum = currentSupplyNum - lpSupplyNum;
 
-    const burnedPercentage = (burnedTokensNum / totalSupplyNum) * 100;
-    const lpPercentage = (lpSupplyNum / totalSupplyNum) * 100;
-    const holderPercentage = (holderSupplyNum / totalSupplyNum) * 100;
+    const lpPercentage = (lpSupplyNum / maxSupplyNum) * 100;
+    const holderPercentage = (holderSupplyNum / maxSupplyNum) * 100;
+    const currentSupplyPercentage = (currentSupplyNum / maxSupplyNum) * 100;
 
     return [
       {
@@ -68,6 +44,15 @@ export default function TokenSupplyCard() {
         bgColor: "bg-green-900/30",
         icon: Users,
         iconColor: "text-green-400"
+      },
+      {
+        label: "Current Supply",
+        percentage: currentSupplyPercentage,
+        value: `${currentSupplyNum.toLocaleString()} ${tokenData.symbol}`,
+        color: "from-purple-500 to-pink-500",
+        bgColor: "bg-purple-900/30",
+        icon: TrendingUp,
+        iconColor: "text-purple-400"
       }
     ];
   };
@@ -78,7 +63,7 @@ export default function TokenSupplyCard() {
     <div className="space-y-3">
       <div className="flex items-center justify-center gap-2 text-green-400 text-lg font-semibold">
         <PieChart className="h-5 w-5" />
-        Token Information
+        Token Distribution
       </div>
       <Card className="border-green-500/30 h-full">
         <CardContent className="space-y-6 px-3 sm:px-6 pt-6 pb-6 h-full flex flex-col justify-between">
@@ -86,31 +71,18 @@ export default function TokenSupplyCard() {
             <div className="flex items-center justify-center h-full">
               <div className="flex items-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Loading supply data...</span>
+                <span className="text-sm text-muted-foreground">Loading distribution data...</span>
               </div>
             </div>
           ) : error ? (
             <div className="flex items-center justify-center h-full">
-              <span className="text-sm text-red-400">Failed to load supply data</span>
+              <span className="text-sm text-red-400">Failed to load distribution data</span>
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Main Supply Display */}
-              <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-green-300">
-                  {hasTokenData && tokenData
-                    ? Number(formatUnits(tokenData.totalSupply, tokenData.decimals)).toLocaleString()
-                    : '1,000,000'
-                  }
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Total {hasTokenData && tokenData ? tokenData.symbol : 'LPB'} Supply
-                </div>
-              </div>
-
-              {/* Supply Distribution Bars */}
+              {/* Supply Distribution Bars - ONLY REAL DATA */}
               <div className="space-y-4">
-                {supplyData.map((item, index) => (
+                {supplyData ? supplyData.map((item, index) => (
                   <div key={index} className="space-y-2">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
@@ -133,20 +105,24 @@ export default function TokenSupplyCard() {
                       />
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <div className="text-center text-sm text-muted-foreground">
+                    Loading supply distribution...
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* Supply Status */}
+          {/* Distribution Status */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <div className="flex items-center gap-2 text-xs">
               <PieChart className="h-3 w-3 text-green-500" />
               <span className="text-muted-foreground">Live Distribution</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <Flame className="h-3 w-3 text-red-500" />
-              <span className="text-muted-foreground">Deflationary Model</span>
+              <Users className="h-3 w-3 text-blue-500" />
+              <span className="text-muted-foreground">Real-Time Data</span>
             </div>
           </div>
         </CardContent>
