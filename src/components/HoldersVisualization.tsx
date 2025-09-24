@@ -81,26 +81,56 @@ const HoldersVisualization: React.FC = () => {
   }, [realHolders, hasRealData, tokenData, hasTokenData])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2">
-      <div className="flex items-center gap-2 text-orange-400 text-lg font-semibold">
-        <Users className="h-5 w-5" />
-        Top 100 Real Holders
+    <div className="flex flex-col items-center justify-center gap-4 py-4">
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center gap-2">
+          <div className="p-1.5 bg-orange-500/20 rounded border border-orange-400/40">
+            <Users className="h-5 w-5 text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+          </div>
+          <h3 className="text-xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)]">
+            TOP_100_REAL_HOLDERS
+          </h3>
+        </div>
+        <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
       </div>
-      <div className="text-center space-y-1">
-        <p className="text-xs text-muted-foreground">
+
+      <div className="text-center space-y-3">
+        <p className="text-xs font-mono tracking-wide text-gray-300">
           {hasRealData
-            ? 'Real SonicScan API data'
-            : 'Loading real holder data from SonicScan...'
+            ? <><span className="text-orange-400">[</span>REAL_SONICSCAN_API_DATA<span className="text-orange-400">]</span></>
+            : <><span className="text-orange-400">[</span>LOADING_HOLDER_DATA<span className="text-orange-400">]</span></>
           }
         </p>
-        <Button
-          size="sm"
-          className="w-auto border-2 border-orange-500/30 hover:bg-orange-500/10 text-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-3 py-2 text-sm rounded-lg bg-gradient-to-r from-orange-600/20 to-red-600/20 hover:from-orange-600/30 hover:to-red-600/30"
-          onClick={() => window.open('https://sonicscan.org/token/tokenholderchart/0x001bFF4b6da770f445A740227224D3c8b48e6fb2', '_blank', 'noopener,noreferrer')}
-        >
-          <ExternalLink className="h-3 w-3 mr-1" />
-          View Complete Data
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
+          <Button
+            size="sm"
+            className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 font-mono font-bold tracking-wider px-4 py-2 before:absolute before:inset-0 before:bg-gradient-to-r before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse"
+            onClick={() => window.open('https://sonicscan.org/token/tokenholderchart/0x001bFF4b6da770f445A740227224D3c8b48e6fb2', '_blank', 'noopener,noreferrer')}
+          >
+            <div className="flex items-center gap-2 relative z-10">
+              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                <ExternalLink className="h-4 w-4 text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.8)]" />
+              </div>
+              <span className="text-xs text-orange-100 drop-shadow-[0_0_6px_rgba(249,115,22,0.6)]">
+                VIEW_LBP_DATA
+              </span>
+            </div>
+          </Button>
+          <Button
+            size="sm"
+            className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 font-mono font-bold tracking-wider px-4 py-2 before:absolute before:inset-0 before:bg-gradient-to-r before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse"
+            onClick={() => window.open('https://sonicscan.org/token/tokenholderchart/0x01fd763618E555A7118F1d1144C88113A5C34e64', '_blank', 'noopener,noreferrer')}
+          >
+            <div className="flex items-center gap-2 relative z-10">
+              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                <ExternalLink className="h-4 w-4 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
+              </div>
+              <span className="text-xs text-orange-100 drop-shadow-[0_0_6px_rgba(249,115,22,0.6)]">
+                VIEW_LFD_DATA
+              </span>
+            </div>
+          </Button>
+        </div>
       </div>
     </div>
   )

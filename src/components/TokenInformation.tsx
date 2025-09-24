@@ -8,73 +8,235 @@ import TokenDistributionCard from "@/components/TokenDistributionCard"
 import ProtocolOwnedLiquidityCard from "@/components/ProtocolOwnedLiquidityCard"
 import HoldersVisualization from "@/components/HoldersVisualization"
 import { useTokenData } from "@/hooks/use-token-data"
+import { useLFDTokenData } from "@/hooks/use-lfd-token-data"
 import { formatUnits } from "viem"
 
 export default function TokenInformation() {
   const { tokenData, isLoading, error, hasTokenData } = useTokenData();
+  const {
+    totalSupply: lfdTotalSupply,
+    maxTotalSupply: lfdMaxSupply,
+    burnedPercentage: lfdBurnedPercentage,
+    symbol: lfdSymbol,
+    isLoading: lfdLoading,
+    error: lfdError
+  } = useLFDTokenData();
   return (
-    <Card className="w-full sm:w-4/5 mx-auto bg-transparent border-0">
+    <Card className="w-full mx-auto bg-transparent border-0">
       <CardContent className="px-4 sm:px-6">
-        <div className="grid gap-8 sm:gap-8 mt-0 sm:mt-4">
+        <div className="space-y-8">
 
-          {/* Token Details Section - MOVED AND RESTYLED */}
-          <div className="mb-6 sm:mb-2">
-            <Card> {/* Added Card component for background and border */}
-              <CardContent className="py-4 sm:py-4 px-4 sm:px-6"> {/* Added CardContent and adjusted padding */}
+          {/* ═══ REAL HOLDERS DATA ═══ */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <h2 className="text-2xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)] mb-2">
+                ═══ REAL_HOLDERS_DATA ═══
+              </h2>
+              <div className="h-[2px] w-44 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
+            </div>
+            <div>
+              <HoldersVisualization />
+            </div>
+          </div>
+
+          {/* ═══ TOKEN OVERVIEW ═══ */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <h2 className="text-2xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)] mb-2">
+                ═══ TOKEN_OVERVIEW ═══
+              </h2>
+              <div className="h-[2px] w-48 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* LBP Token Card */}
+            <Card className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_25px_rgba(249,115,22,0.4),inset_0_1px_0_rgba(249,115,22,0.2)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6),0_0_80px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.4)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
+              <div className="absolute top-3 right-3 w-3 h-3 bg-orange-400 rounded-full animate-ping"></div>
+              <div className="absolute top-3 right-3 w-3 h-3 bg-orange-500 rounded-full"></div>
+              <CardContent className="px-4 py-5 relative z-10">
                 {isLoading ? (
-                  <div className="flex items-center justify-center gap-2 py-2">
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Loading token data...</span>
+                  <div className="flex items-center justify-center h-24">
+                    <div className="flex items-center gap-3">
+                      <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                        <Loader2 className="h-5 w-5 animate-spin text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                      </div>
+                      <span className="font-mono tracking-wide text-orange-400">
+                        <span className="text-orange-300">[</span>LOADING_LBP_DATA<span className="text-orange-300">]</span>
+                      </span>
+                    </div>
                   </div>
                 ) : error ? (
-                  <div className="text-center py-2">
-                    <span className="text-sm text-red-400">Failed to load token data</span>
+                  <div className="flex items-center justify-center h-24">
+                    <span className="font-mono tracking-wide text-red-400">
+                      <span className="text-red-300">[</span>ERROR<span className="text-red-300">]</span> Failed to load LBP data
+                    </span>
                   </div>
                 ) : (
-                  <ul className="flex flex-col sm:flex-row flex-wrap justify-around items-center gap-x-6 gap-y-3 text-xs sm:text-sm">
-                    <li className="flex items-center gap-2">
-                      <Coins className="h-4 w-4 text-blue-500" />
-                      <span>
-                        {hasTokenData && tokenData
-                          ? `${Number(formatUnits(tokenData.maxTotalSupply, tokenData.decimals)).toLocaleString()} ${tokenData.symbol} Max`
-                          : 'Loading supply...'
-                        }
-                      </span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Receipt className="h-4 w-4 text-green-500" />
-                      <span>Tax: 0% Buy/Sell</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Lock className="h-4 w-4 text-orange-500" />
-                      <span>LP: Locked ∞</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Flame className="h-4 w-4 text-red-500" />
-                      <span>
-                        {hasTokenData && tokenData
-                          ? `${tokenData.burnedPercentage.toFixed(2)}% Burned`
-                          : 'Loading burns...'
-                        }
-                      </span>
-                    </li>
-                  </ul>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <div className="px-3 py-1.5 bg-orange-500/20 text-orange-400 border-2 border-orange-500/60 rounded-lg font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(249,115,22,0.4)]">
+                        [LBP_TOKEN]
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Coins className="h-4 w-4 text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">MAX_SUPPLY</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.6)]">
+                          {hasTokenData && tokenData
+                            ? `${Number(formatUnits(tokenData.maxTotalSupply, tokenData.decimals)).toLocaleString()} ${tokenData.symbol}`
+                            : '[LOADING...]'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Flame className="h-4 w-4 text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">BURNED</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]">
+                          {hasTokenData && tokenData
+                            ? `${tokenData.burnedPercentage.toFixed(2)}%`
+                            : '[LOADING...]'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Receipt className="h-4 w-4 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">TAX</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]">
+                          <span className="text-orange-400">[</span>0%_BUY/SELL<span className="text-orange-400">]</span>
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Lock className="h-4 w-4 text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">LP_STATUS</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.6)]">
+                          <span className="text-orange-400">[</span>LOCKED_∞<span className="text-orange-400">]</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </Card>
+
+            {/* LFD Token Card */}
+            <Card className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_25px_rgba(249,115,22,0.4),inset_0_1px_0_rgba(249,115,22,0.2)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6),0_0_80px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.4)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
+              <div className="absolute top-3 right-3 w-3 h-3 bg-blue-400 rounded-full animate-ping"></div>
+              <div className="absolute top-3 right-3 w-3 h-3 bg-blue-500 rounded-full"></div>
+              <CardContent className="px-4 py-5 relative z-10">
+                {lfdLoading ? (
+                  <div className="flex items-center justify-center h-24">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                        <Loader2 className="h-4 w-4 animate-spin text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                      </div>
+                      <span className="text-xs font-mono tracking-wide text-blue-400">
+                        <span className="text-orange-400">[</span>LOADING_LFD_DATA<span className="text-orange-400">]</span>
+                      </span>
+                    </div>
+                  </div>
+                ) : lfdError ? (
+                  <div className="flex items-center justify-center h-24">
+                    <span className="text-xs font-mono tracking-wide text-red-400">
+                      <span className="text-red-300">[</span>ERROR<span className="text-red-300">]</span> Failed to load LFD data
+                    </span>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <div className="px-3 py-1.5 bg-blue-500/20 text-blue-400 border-2 border-blue-500/60 rounded-lg font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                        [LFD_TOKEN]
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Coins className="h-4 w-4 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">MAX_SUPPLY</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">
+                          {lfdMaxSupply && lfdSymbol
+                            ? `${Number(lfdMaxSupply).toLocaleString()} ${lfdSymbol}`
+                            : '[LOADING...]'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Flame className="h-4 w-4 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">BURNED</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]">
+                          {lfdBurnedPercentage !== undefined
+                            ? `${lfdBurnedPercentage.toFixed(2)}%`
+                            : '[LOADING...]'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Lock className="h-4 w-4 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">LP_STATUS</span>
+                        </div>
+                        <span className="text-xs font-mono font-semibold text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">
+                          <span className="text-orange-400">[</span>PROTOCOL_OWNED<span className="text-orange-400">]</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+            </div>
           </div>
 
-          {/* Holders Visualization */}
-          <div>
-            <HoldersVisualization />
+          {/* ═══ LIQUIDITY DATA ═══ */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <h2 className="text-2xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)] mb-2">
+                ═══ LIQUIDITY_DATA ═══
+              </h2>
+              <div className="h-[2px] w-40 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <LiquidityVisualization />
+              <ProtocolOwnedLiquidityCard />
+            </div>
           </div>
 
-          {/* Cards Grid - 2x2 Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-12 sm:gap-8 lg:gap-12">
-            <LiquidityVisualization />
-            <ProtocolOwnedLiquidityCard />
-            <TokenDistributionCard />
-            <BurnedTokensCard />
+          {/* ═══ ANALYTICS ═══ */}
+          <div className="space-y-4 pt-12 mt-8">
+            <div className="text-center">
+              <h2 className="text-2xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)] mb-2">
+                ═══ ANALYTICS ═══
+              </h2>
+              <div className="h-[2px] w-32 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <TokenDistributionCard />
+              <BurnedTokensCard />
+            </div>
           </div>
 
         </div>

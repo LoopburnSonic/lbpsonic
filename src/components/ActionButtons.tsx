@@ -7,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ExternalLink, Flame } from "lucide-react";
+import { ExternalLink, Flame, Zap, Target } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function ActionButtons() {
@@ -19,45 +19,91 @@ export default function ActionButtons() {
   };
 
   const handleTradeRedirect = () => {
-    // Redirect to Shadow DEX with LPB trading pair
+    // Redirect to Shadow DEX with LBP trading pair
     window.open('https://www.shadow.so/trade?inputCurrency=0x0000000000000000000000000000000000000000&outputCurrency=0x001bFF4b6da770f445A740227224D3c8b48e6fb2', '_blank', 'noopener,noreferrer');
+  };
+
+  const handleFusionCoreRedirect = () => {
+    // Redirect to fusion core page
+    router.push('/fusion-core');
+  };
+
+  const handleLFDTradeRedirect = () => {
+    // Redirect to Shadow DEX with LFD trading pair
+    window.open('https://www.shadow.so/trade?inputCurrency=0x0000000000000000000000000000000000000000&outputCurrency=0xdb6a2fc2bc6e77d9fdfdfc588befdbb9c055bede', '_blank', 'noopener,noreferrer');
   };
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size="lg"
-              className="w-full sm:w-auto border-2 border-orange-500/30 hover:bg-orange-500/10 text-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-xl bg-gradient-to-r from-orange-600/20 to-red-600/20 hover:from-orange-600/30 hover:to-red-600/30"
-              onClick={handleYieldReactorRedirect}
-            >
-              <Flame className="h-4 w-4 mr-2" />
-               Execute Hyper Loop
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Go to Yield Reactor to execute hyperloop and manage burn mechanisms</p>
-          </TooltipContent>
-        </Tooltip>
+      <div className="w-full">
+        {/* Single Row of 4 Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                className="border border-orange-500/30 hover:bg-orange-500/10 text-foreground font-medium shadow-md hover:shadow-lg transition-all duration-300 px-3 py-2 text-xs sm:text-sm rounded-lg bg-gradient-to-r from-orange-600/20 to-red-600/20 hover:from-orange-600/30 hover:to-red-600/30"
+                onClick={handleYieldReactorRedirect}
+              >
+                <Flame className="h-3 w-3 mr-1" />
+                Hyper Loop
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Go to Yield Reactor to execute hyperloop and manage burn mechanisms</p>
+            </TooltipContent>
+          </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto border-2 border-primary/30 hover:bg-primary/10 hover:text-white text-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-xl"
-              onClick={handleTradeRedirect}
-            >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Trade on ShadowDex
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Trade $LPB on Shadow DEX - Opens in new tab</p>
-          </TooltipContent>
-        </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border border-orange-500/30 hover:bg-orange-500/10 hover:text-white text-foreground font-medium shadow-md hover:shadow-lg transition-all duration-300 px-3 py-2 text-xs sm:text-sm rounded-lg"
+                onClick={handleTradeRedirect}
+              >
+                <ExternalLink className="h-3 w-3 mr-1" />
+                Trade LBP
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Trade $LBP on Shadow DEX - Opens in new tab</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                className="border border-blue-500/30 hover:bg-blue-500/10 text-foreground font-medium shadow-md hover:shadow-lg transition-all duration-300 px-3 py-2 text-xs sm:text-sm rounded-lg bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30"
+                onClick={handleFusionCoreRedirect}
+              >
+                <Target className="h-3 w-3 mr-1" />
+                Fusion Core
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Go to Fusion Core to execute burns and manage DAO strategies</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border border-blue-500/30 hover:bg-blue-500/10 hover:text-white text-foreground font-medium shadow-md hover:shadow-lg transition-all duration-300 px-3 py-2 text-xs sm:text-sm rounded-lg"
+                onClick={handleLFDTradeRedirect}
+              >
+                <ExternalLink className="h-3 w-3 mr-1" />
+                Trade LFD
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Trade $LFD on Shadow DEX - Opens in new tab</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
     </TooltipProvider>
   );

@@ -3,10 +3,19 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { PieChart, Users, Droplets, Loader2, TrendingUp } from "lucide-react"
 import { useTokenData } from "@/hooks/use-token-data"
+import { useLFDTokenData } from "@/hooks/use-lfd-token-data"
 import { formatUnits } from "viem"
 
 export default function TokenDistributionCard() {
   const { tokenData, liquidityData, isLoading, error, hasTokenData, hasLiquidityData } = useTokenData();
+  const {
+    totalSupply: lfdTotalSupply,
+    maxTotalSupply: lfdMaxSupply,
+    circulatingPercentage: lfdCirculatingPercentage,
+    symbol: lfdSymbol,
+    isLoading: lfdLoading,
+    error: lfdError
+  } = useLFDTokenData();
 
   // Calculate supply distribution ONLY with real data - NO FALLBACKS
   const getSupplyData = () => {
@@ -60,69 +69,212 @@ export default function TokenDistributionCard() {
   const supplyData = getSupplyData();
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-center gap-2 text-green-400 text-lg font-semibold">
-        <PieChart className="h-5 w-5" />
-        Token Distribution
+    <div className="space-y-4">
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center gap-2">
+          <div className="p-1.5 bg-orange-500/20 rounded border border-orange-400/40">
+            <PieChart className="h-5 w-5 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+          </div>
+          <h3 className="text-lg font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)]">
+            TOKEN_DISTRIBUTION
+          </h3>
+        </div>
+        <div className="h-[1px] w-28 mx-auto bg-gradient-to-r from-transparent via-orange-400/80 to-transparent animate-pulse"></div>
       </div>
-      <Card className="border-green-500/30 h-full">
-        <CardContent className="space-y-6 px-3 sm:px-6 pt-6 pb-6 h-full flex flex-col justify-between">
-          {isLoading ? (
+      <Card className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_25px_rgba(249,115,22,0.4),inset_0_1px_0_rgba(249,115,22,0.2)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6),0_0_80px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.4)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
+        <CardContent className="space-y-6 px-4 pt-5 pb-5 relative z-10">
+          {(isLoading || lfdLoading) ? (
             <div className="flex items-center justify-center h-full">
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Loading distribution data...</span>
+              <div className="flex items-center gap-3">
+                <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                  <Loader2 className="h-5 w-5 animate-spin text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+                </div>
+                <span className="font-mono tracking-wide text-green-400">
+                  <span className="text-orange-400">[</span>LOADING_DISTRIBUTION_DATA<span className="text-orange-400">]</span>
+                </span>
               </div>
             </div>
-          ) : error ? (
+          ) : (error && lfdError) ? (
             <div className="flex items-center justify-center h-full">
-              <span className="text-sm text-red-400">Failed to load distribution data</span>
+              <span className="font-mono tracking-wide text-red-400">
+                <span className="text-red-300">[</span>ERROR<span className="text-red-300">]</span> Failed to load distribution data
+              </span>
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Supply Distribution Bars - ONLY REAL DATA */}
+              {/* LBP Token Distribution */}
               <div className="space-y-4">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="px-3 py-1.5 bg-orange-500/20 text-orange-400 border-2 border-orange-500/60 rounded-lg font-mono font-bold tracking-wider shadow-[0_0_10px_rgba(249,115,22,0.4)]">
+                    [LBP_DISTRIBUTION]
+                  </div>
+                </div>
+
                 {supplyData ? supplyData.map((item, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
+                  <div key={`lbp-${index}`} className="space-y-2">
+                    <div className="flex justify-between items-center p-2 bg-black/40 border border-orange-500/40 rounded-lg">
                       <div className="flex items-center gap-2">
-                        <item.icon className={`h-4 w-4 ${item.iconColor}`} />
-                        <span className="text-sm text-muted-foreground">{item.label}</span>
+                        <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                          <item.icon className={`h-3 w-3 ${item.iconColor} drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]`} />
+                        </div>
+                        <span className="text-sm font-mono tracking-wide text-gray-300">{item.label}</span>
                       </div>
                       <div className="text-right">
-                        <div className={`text-sm font-medium ${item.iconColor}`}>
+                        <div className={`text-xs font-mono font-semibold ${item.iconColor} drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]`}>
                           {item.percentage.toFixed(1)}%
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="font-mono text-xs text-gray-400">
                           {item.value}
                         </div>
                       </div>
                     </div>
-                    <div className={`h-3 ${item.bgColor} rounded-full overflow-hidden`}>
+                    <div className="h-3 bg-black/60 rounded-full overflow-hidden border border-orange-500/30">
                       <div
-                        className={`h-full bg-gradient-to-r ${item.color} rounded-full transition-all duration-1000 ease-out`}
+                        className={`h-full bg-gradient-to-r ${item.color} rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(34,197,94,0.4)]`}
                         style={{ width: `${Math.min(item.percentage, 100)}%` }}
                       />
                     </div>
                   </div>
                 )) : (
-                  <div className="text-center text-sm text-muted-foreground">
-                    Loading supply distribution...
+                  <div className="text-center text-xs font-mono tracking-wide text-orange-400">
+                    <span className="text-orange-300">[</span>LOADING_LBP_DISTRIBUTION<span className="text-orange-300">]</span>
+                  </div>
+                )}
+              </div>
+
+              {/* LFD Token Distribution */}
+              <div className="space-y-6 border-t-2 border-orange-500/40 pt-6">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="px-4 py-2 bg-blue-500/20 text-blue-400 border-2 border-blue-500/60 rounded-lg font-mono font-bold tracking-wider shadow-[0_0_10px_rgba(59,130,246,0.4)]">
+                    [LFD_DISTRIBUTION]
+                  </div>
+                </div>
+
+                {lfdTotalSupply && lfdMaxSupply && lfdSymbol ? (
+                  <>
+                    {/* LP Supply */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center p-2 bg-black/40 border border-blue-500/40 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Droplets className="h-3 w-3 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">LP Supply</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs font-mono font-semibold text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">
+                            15.0%
+                          </div>
+                          <div className="font-mono text-xs text-gray-400">
+                            {(Number(lfdMaxSupply) * 0.15).toLocaleString()} {lfdSymbol}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-3 bg-black/60 rounded-full overflow-hidden border border-blue-500/30">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)]"
+                          style={{ width: '15%' }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Holder Supply */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center p-2 bg-black/40 border border-green-500/40 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <Users className="h-3 w-3 text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">Holder Supply</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs font-mono font-semibold text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]">
+                            {lfdCirculatingPercentage !== undefined
+                              ? `${lfdCirculatingPercentage.toFixed(1)}%`
+                              : '[LOADING...]'
+                            }
+                          </div>
+                          <div className="font-mono text-xs text-gray-400">
+                            {Number(lfdTotalSupply).toLocaleString()} {lfdSymbol}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-3 bg-black/60 rounded-full overflow-hidden border border-green-500/30">
+                        <div
+                          className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(34,197,94,0.4)]"
+                          style={{
+                            width: `${lfdCirculatingPercentage !== undefined
+                              ? Math.min(lfdCirculatingPercentage, 100)
+                              : 0
+                            }%`
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Current Supply */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center p-2 bg-black/40 border border-purple-500/40 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <TrendingUp className="h-3 w-3 text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">Current Supply</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs font-mono font-semibold text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]">
+                            {((Number(lfdTotalSupply) / Number(lfdMaxSupply)) * 100).toFixed(1)}%
+                          </div>
+                          <div className="font-mono text-xs text-gray-400">
+                            {Number(lfdTotalSupply).toLocaleString()} / {Number(lfdMaxSupply).toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-4 bg-black/60 rounded-full overflow-hidden border border-purple-500/30">
+                        <div
+                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(168,85,247,0.4)]"
+                          style={{
+                            width: `${Math.min((Number(lfdTotalSupply) / Number(lfdMaxSupply)) * 100, 100)}%`
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center text-xs font-mono tracking-wide text-blue-400">
+                    <span className="text-orange-400">[</span>LOADING_LFD_DISTRIBUTION<span className="text-orange-400">]</span>
                   </div>
                 )}
               </div>
             </div>
           )}
 
-          {/* Distribution Status */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-            <div className="flex items-center gap-2 text-xs">
-              <PieChart className="h-3 w-3 text-green-500" />
-              <span className="text-muted-foreground">Live Distribution</span>
+          {/* Dual Token Distribution Status */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0 pt-3 border-t-2 border-orange-500/40">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                  <PieChart className="h-3 w-3 text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.8)]" />
+                </div>
+                <span className="text-xs font-mono tracking-wide text-gray-300">
+                  <span className="text-orange-400">[</span>LBP_DISTRIBUTION<span className="text-orange-400">]</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                  <Users className="h-3 w-3 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
+                </div>
+                <span className="text-xs font-mono tracking-wide text-gray-300">
+                  <span className="text-orange-400">[</span>LFD_DISTRIBUTION<span className="text-orange-400">]</span>
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs">
-              <Users className="h-3 w-3 text-blue-500" />
-              <span className="text-muted-foreground">Real-Time Data</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span className="text-xs font-mono tracking-wide text-gray-300">
+                <span className="text-orange-400">[</span>LIVE_DATA<span className="text-orange-400">]</span>
+              </span>
             </div>
           </div>
         </CardContent>
