@@ -4,7 +4,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { PieChart, Users, Droplets, Loader2, TrendingUp } from "lucide-react"
 import { useTokenData } from "@/hooks/use-token-data"
 import { useLFDTokenData } from "@/hooks/use-lfd-token-data"
+import { useReadContract } from 'wagmi'
 import { formatUnits } from "viem"
+import { FLD_CONTRACTS } from '@/constants/contracts'
+import LFDTokenABI from '@/abis/LFDToken.json'
 
 export default function TokenDistributionCard() {
   const { tokenData, liquidityData, isLoading, error, hasTokenData, hasLiquidityData } = useTokenData();
@@ -13,9 +16,61 @@ export default function TokenDistributionCard() {
     maxTotalSupply: lfdMaxSupply,
     circulatingPercentage: lfdCirculatingPercentage,
     symbol: lfdSymbol,
+    decimals: lfdDecimals,
+    totalSupplyRaw: lfdTotalSupplyRaw,
+    maxTotalSupplyRaw: lfdMaxSupplyRaw,
     isLoading: lfdLoading,
     error: lfdError
   } = useLFDTokenData();
+
+  // Get real LP supply from contract
+  const { data: lfdLpSupplyRaw } = useReadContract({
+    address: FLD_CONTRACTS.LFD_TOKEN,
+    abi: LFDTokenABI,
+    functionName: 'balanceOf',
+    args: ['0x7dac17a1d054668449bcf6a4d80af657f4b1bc3b'], // LP pool address
+    query: {
+      enabled: true,
+    }
+  });
+
+  // Get protocol owned supply from contract
+  const { data: lfdProtocolSupplyRaw } = useReadContract({
+    address: FLD_CONTRACTS.LFD_TOKEN,
+    abi: LFDTokenABI,
+    functionName: 'balanceOf',
+    args: ['0xDA75FE3f43933e10651Ef6BC57E6e64a6A10abd2'], // Protocol owner address
+    query: {
+      enabled: true,
+    }
+  });
+
+  // Calculate real LFD distribution data
+  const getLFDDistributionData = () => {
+    if (!lfdMaxSupplyRaw || !lfdTotalSupplyRaw || !lfdLpSupplyRaw || !lfdProtocolSupplyRaw || !lfdDecimals) {
+      return null;
+    }
+
+    const lpSupply = formatUnits(lfdLpSupplyRaw as bigint, lfdDecimals);
+    const protocolSupply = formatUnits(lfdProtocolSupplyRaw as bigint, lfdDecimals);
+    const holderSupplyRaw = lfdTotalSupplyRaw - (lfdLpSupplyRaw as bigint) - (lfdProtocolSupplyRaw as bigint);
+    const holderSupply = formatUnits(holderSupplyRaw, lfdDecimals);
+
+    const lpPercentage = (Number(lfdLpSupplyRaw as bigint) / Number(lfdMaxSupplyRaw)) * 100;
+    const protocolPercentage = (Number(lfdProtocolSupplyRaw as bigint) / Number(lfdMaxSupplyRaw)) * 100;
+    const holderPercentage = (Number(holderSupplyRaw) / Number(lfdMaxSupplyRaw)) * 100;
+
+    return {
+      lpSupply,
+      lpPercentage,
+      protocolSupply,
+      protocolPercentage,
+      holderSupply,
+      holderPercentage
+    };
+  };
+
+  const lfdDistribution = getLFDDistributionData();
 
   // Calculate supply distribution ONLY with real data - NO FALLBACKS
   const getSupplyData = () => {
@@ -150,7 +205,7 @@ export default function TokenDistributionCard() {
                   </div>
                 </div>
 
-                {lfdTotalSupply && lfdMaxSupply && lfdSymbol ? (
+                {lfdDistribution && lfdTotalSupply && lfdMaxSupply && lfdSymbol ? (
                   <>
                     {/* LP Supply */}
                     <div className="space-y-3">
@@ -163,17 +218,43 @@ export default function TokenDistributionCard() {
                         </div>
                         <div className="text-right">
                           <div className="text-xs font-mono font-semibold text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">
-                            15.0%
+                            {lfdDistribution.lpPercentage.toFixed(2)}%
                           </div>
                           <div className="font-mono text-xs text-gray-400">
-                            {(Number(lfdMaxSupply) * 0.15).toLocaleString()} {lfdSymbol}
+                            {Number(lfdDistribution.lpSupply).toLocaleString()} {lfdSymbol}
                           </div>
                         </div>
                       </div>
                       <div className="h-3 bg-black/60 rounded-full overflow-hidden border border-blue-500/30">
                         <div
                           className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)]"
-                          style={{ width: '15%' }}
+                          style={{ width: `${Math.min(lfdDistribution.lpPercentage, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Protocol Owned Supply */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center p-2 bg-black/40 border border-purple-500/40 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
+                            <TrendingUp className="h-3 w-3 text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]" />
+                          </div>
+                          <span className="text-xs font-mono tracking-wide text-gray-300">Protocol Owned</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs font-mono font-semibold text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]">
+                            {lfdDistribution.protocolPercentage.toFixed(2)}%
+                          </div>
+                          <div className="font-mono text-xs text-gray-400">
+                            {Number(lfdDistribution.protocolSupply).toLocaleString()} {lfdSymbol}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-3 bg-black/60 rounded-full overflow-hidden border border-purple-500/30">
+                        <div
+                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(168,85,247,0.4)]"
+                          style={{ width: `${Math.min(lfdDistribution.protocolPercentage, 100)}%` }}
                         />
                       </div>
                     </div>
@@ -189,13 +270,10 @@ export default function TokenDistributionCard() {
                         </div>
                         <div className="text-right">
                           <div className="text-xs font-mono font-semibold text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]">
-                            {lfdCirculatingPercentage !== undefined
-                              ? `${lfdCirculatingPercentage.toFixed(1)}%`
-                              : '[LOADING...]'
-                            }
+                            {lfdDistribution.holderPercentage.toFixed(2)}%
                           </div>
                           <div className="font-mono text-xs text-gray-400">
-                            {Number(lfdTotalSupply).toLocaleString()} {lfdSymbol}
+                            {Number(lfdDistribution.holderSupply).toLocaleString()} {lfdSymbol}
                           </div>
                         </div>
                       </div>
@@ -203,10 +281,7 @@ export default function TokenDistributionCard() {
                         <div
                           className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(34,197,94,0.4)]"
                           style={{
-                            width: `${lfdCirculatingPercentage !== undefined
-                              ? Math.min(lfdCirculatingPercentage, 100)
-                              : 0
-                            }%`
+                            width: `${Math.min(lfdDistribution.holderPercentage, 100)}%`
                           }}
                         />
                       </div>

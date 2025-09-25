@@ -24,64 +24,68 @@ export default function Home() {
         />
 
         {/* Content */}
-        <div className="relative z-0 flex flex-col gap-8 items-center max-w-7xl mx-auto px-4">
+        <div className="relative z-0 flex flex-col gap-6 md:gap-8 items-center max-w-7xl mx-auto px-3 sm:px-4">
       {/* Hero Section */}
       <section className="text-center relative w-full flex flex-col md:flex-row md:items-center md:justify-between md:text-left md:gap-8">
         {/* Show Orb + LoopFuse animation at top on mobile, hidden on desktop */}
-        <div className="relative min-h-[300px] md:hidden mb-8 flex items-center justify-center">
+        <div className="relative min-h-[250px] sm:min-h-[300px] md:hidden mb-6 sm:mb-8 flex items-center justify-center">
           {/* LoopFuse Circle Animation - Behind */}
           <div className="absolute inset-0 flex items-center justify-center z-0">
             <CircleOrb hue={240} />
           </div>
 
           {/* LoopBurn Infinity Animation - In Front */}
-          <div className="relative z-10 min-h-[220px] w-full">
+          <div className="relative z-10 min-h-[180px] sm:min-h-[220px] w-full">
             <Orb />
           </div>
         </div>
-        
+
         <div className="flex-1 flex flex-col items-center">
-          <h1 className="text-center text-4xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)]">LOOPBURN_+_LOOPFUSE</h1>
-          <p className="text-center text-xl font-mono tracking-wide text-gray-300 mb-4 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">DUAL_HYPER-DEFLATIONARY_ECOSYSTEM_FUELING_MAXIMUM_DEFLATION</p>
+          <h1 className="text-center text-2xl sm:text-3xl md:text-4xl font-mono font-bold tracking-wider text-orange-100 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)] px-2">LOOPBURN_+_LOOPFUSE</h1>
+          <p className="text-center text-sm sm:text-base md:text-xl font-mono tracking-wide text-gray-300 mb-4 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)] px-2 leading-relaxed">DUAL_HYPER-DEFLATIONARY_ECOSYSTEM_FUELING_MAXIMUM_DEFLATION</p>
 
           {/* Dual Contract Address Display */}
-          <div className="space-y-2 w-full max-w-2xl">
+          <div className="space-y-2 w-full max-w-2xl px-2">
             {/* LBP Contract */}
-            <div className="flex items-center justify-center bg-black/40 backdrop-blur-sm p-3 rounded-lg w-full gap-3 border border-orange-500/30">
-              <div className="px-3 py-1.5 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-sm font-mono font-semibold tracking-wide">
+            <div className="flex items-center justify-between sm:justify-center bg-black/40 backdrop-blur-sm p-2 sm:p-3 rounded-lg w-full gap-2 sm:gap-3 border border-orange-500/30">
+              <div className="px-2 sm:px-3 py-1 sm:py-1.5 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-xs sm:text-sm font-mono font-semibold tracking-wide flex-shrink-0">
                 LBP
               </div>
-              <code className="font-mono text-sm text-orange-200 tracking-wider"> 0x001bFF4b6da770f445A740227224D3c8b48e6fb2 </code>
-              <CopyButton text="0x001bFF4b6da770f445A740227224D3c8b48e6fb2" />
+              <code className="font-mono text-xs sm:text-sm text-orange-200 tracking-wider overflow-hidden text-ellipsis min-w-0 flex-1 text-center"> 0x001bFF4b6da770f445A740227224D3c8b48e6fb2 </code>
+              <div className="flex-shrink-0">
+                <CopyButton text="0x001bFF4b6da770f445A740227224D3c8b48e6fb2" />
+              </div>
             </div>
 
             {/* LFD Contract */}
-            <div className="flex items-center justify-center bg-black/40 backdrop-blur-sm p-3 rounded-lg w-full gap-3 border border-orange-500/30">
-              <div className="px-3 py-1.5 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-sm font-mono font-semibold tracking-wide">
+            <div className="flex items-center justify-between sm:justify-center bg-black/40 backdrop-blur-sm p-2 sm:p-3 rounded-lg w-full gap-2 sm:gap-3 border border-orange-500/30">
+              <div className="px-2 sm:px-3 py-1 sm:py-1.5 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-xs sm:text-sm font-mono font-semibold tracking-wide flex-shrink-0">
                 LFD
               </div>
-              <code className="font-mono text-sm text-orange-200 tracking-wider"> 0xdb6a2fc2bc6e77d9fdfdfc588befdbb9c055bede </code>
-              <CopyButton text="0xdb6a2fc2bc6e77d9fdfdfc588befdbb9c055bede" />
+              <code className="font-mono text-xs sm:text-sm text-orange-200 tracking-wider overflow-hidden text-ellipsis min-w-0 flex-1 text-center"> 0x01fd763618E555A7118F1d1144C88113A5C34e64 </code>
+              <div className="flex-shrink-0">
+                <CopyButton text="0x01fd763618E555A7118F1d1144C88113A5C34e64" />
+              </div>
             </div>
           </div>
 
           {/* Add Built on Sonic section */}
-          <div className="flex items-center justify-center gap-3 w-full mt-6">
-            <span className="text-2xl font-mono tracking-wider text-gray-300 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">BUILT_ON</span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 w-full mt-4 sm:mt-6 px-2">
+            <span className="text-lg sm:text-xl md:text-2xl font-mono tracking-wider text-gray-300 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">BUILT_ON</span>
             <div className="relative">
               <div className="absolute inset-0 blur-lg bg-orange-500/30 animate-pulse rounded-full"></div>
               <Image
                 src="/sonic-logo.png"
                 alt="Sonic Blockchain"
-                width={250}
-                height={85}
-                className="object-contain relative z-10 hover:scale-105 transition-transform duration-300"
+                width={200}
+                height={68}
+                className="object-contain relative z-10 hover:scale-105 transition-transform duration-300 w-[150px] sm:w-[200px] md:w-[250px] h-auto"
               />
             </div>
           </div>
 
-          <div className="max-w-[300px] md:max-w-[700px] text-center md:text-center mt-6">
-            <p className="text-base md:text-lg font-mono tracking-wide leading-relaxed text-gray-300">
+          <div className="max-w-[280px] sm:max-w-[400px] md:max-w-[700px] text-center md:text-center mt-4 sm:mt-6 px-2">
+            <p className="text-sm sm:text-base md:text-lg font-mono tracking-wide leading-relaxed text-gray-300">
               <span className="text-orange-400">$LBP</span> and <span className="text-orange-400">$LFD</span> are dual hyper-deflationary tokens on the <span className="text-orange-400">Sonic network</span>.
               <span className="text-orange-400">LoopBurn ($LBP)</span> boosts trading volume and incentivizes liquidity without token taxes,
               while <span className="text-orange-400">LoopFuse ($LFD)</span> operates as a DAO with protocol-owned liquidity.
@@ -89,10 +93,6 @@ export default function Home() {
               creating maximum <span className="text-orange-400">scarcity</span> and <span className="text-orange-400">value appreciation</span>.
             </p>
           </div>
-
-          <section className="mt-8 w-full flex flex-col items-center">
-            <ActionButtons />
-          </section>
         </div>
 
         {/* Desktop Orb + LoopFuse animation - hidden on mobile */}
@@ -109,22 +109,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Centered Action Buttons */}
+      <section className="w-full flex justify-center py-4 sm:py-6 md:py-8 px-2">
+        <ActionButtons />
+      </section>
+
         {/* LBP Features Section */}
-        <Card className="border-none bg-transparent shadow-none">
-          <CardContent>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-mono font-bold mb-4 tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)]">
+        <Card className="border-none bg-transparent shadow-none w-full">
+          <CardContent className="px-2 sm:px-4 md:px-6">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-mono font-bold mb-3 sm:mb-4 tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)] px-2">
                 LOOPBURN_($LBP)_FEATURES
               </h2>
               <div className="flex items-center justify-center gap-2 mb-4">
-                <div className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-sm font-mono font-semibold tracking-wide">
+                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-xs sm:text-sm font-mono font-semibold tracking-wide">
                   [YIELD_REACTOR_POWERED]
                 </div>
               </div>
             </div>
 
             {/* LBP Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
               <Card className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_20px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.2)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6),0_0_80px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.4)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
                 <div className="absolute top-2 right-2 w-2 h-2 bg-orange-400 rounded-full animate-ping"></div>
                 <div className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full"></div>
@@ -221,21 +226,21 @@ export default function Home() {
         </Card>
 
         {/* LFD Features Section */}
-        <Card className="border-none bg-transparent shadow-none">
-          <CardContent>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-mono font-bold mb-4 tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)]">
+        <Card className="border-none bg-transparent shadow-none w-full">
+          <CardContent className="px-2 sm:px-4 md:px-6">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-mono font-bold mb-3 sm:mb-4 tracking-wider text-orange-100 drop-shadow-[0_0_12px_rgba(249,115,22,0.8)] px-2">
                 LOOPFUSE_($LFD)_FEATURES
               </h2>
               <div className="flex items-center justify-center gap-2 mb-4">
-                <div className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-sm font-mono font-semibold tracking-wide">
+                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500/20 text-orange-400 rounded border border-orange-400/40 text-xs sm:text-sm font-mono font-semibold tracking-wide">
                   [FUSION_CORE_POWERED]
                 </div>
               </div>
             </div>
 
             {/* LFD Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
               <Card className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_20px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.2)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6),0_0_80px_rgba(249,115,22,0.3),inset_0_1px_0_rgba(249,115,22,0.4)] transition-all duration-700 hover:scale-105 hover:border-orange-400/80 before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
                 <div className="absolute top-2 right-2 w-2 h-2 bg-orange-400 rounded-full animate-ping"></div>
                 <div className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full"></div>

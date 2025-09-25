@@ -34,13 +34,13 @@ export default function CopyButton({ text }: CopyButtonProps) {
   return (
     <button
       onClick={copyToClipboard}
-      className="p-2 hover:bg-gray-700/20 rounded-full transition-colors"
+      className="p-1.5 sm:p-2 hover:bg-gray-700/20 rounded-full transition-colors"
       title="Copy contract address"
     >
       {copied ? (
-        <Check className="h-5 w-5 text-green-500" />
+        <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
       ) : (
-        <Copy className="h-5 w-5" />
+        <Copy className="h-4 w-4 sm:h-5 sm:w-5" />
       )}
     </button>
   );

@@ -170,3 +170,48 @@ body {
     opacity: 0.7; /* Pulsed opacity */
   }
 }
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  /* Ensure text doesn't get too small on mobile */
+  .font-mono {
+    letter-spacing: 0.05em;
+  }
+
+  /* Improve touch targets */
+  button, a {
+    min-height: 44px;
+  }
+
+  /* Better mobile scrolling */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+}

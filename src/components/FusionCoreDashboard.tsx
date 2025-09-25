@@ -51,9 +51,9 @@ export default function FusionCoreDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Main Functions Status */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
         {/* burnFuse() Function */}
         <Card className={`relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 transition-all duration-700 ${
           canBurnFuse
@@ -62,18 +62,18 @@ export default function FusionCoreDashboard() {
         } after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse`}>
           <div className={`absolute top-2 right-2 w-3 h-3 rounded-full animate-ping ${canBurnFuse ? 'bg-green-400' : 'bg-orange-400'}`}></div>
           <div className={`absolute top-2 right-2 w-3 h-3 rounded-full ${canBurnFuse ? 'bg-green-500' : 'bg-orange-500'}`}></div>
-          <CardHeader className="relative z-10">
-            <CardTitle className="text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
-              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
-                <Flame className={`h-6 w-6 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)] ${canBurnFuse ? 'text-green-400' : 'text-orange-400'}`} />
+          <CardHeader className="relative z-10 px-3 sm:px-6 pb-3 sm:pb-6">
+            <CardTitle className="text-lg sm:text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-2 sm:gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
+              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40 flex-shrink-0">
+                <Flame className={`h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)] ${canBurnFuse ? 'text-green-400' : 'text-orange-400'}`} />
               </div>
-              BURNFUSE()
+              <span className="truncate">BURNFUSE()</span>
             </CardTitle>
-            <CardDescription className="font-mono tracking-wide text-gray-300">
+            <CardDescription className="font-mono tracking-wide text-gray-300 text-sm sm:text-base">
               <span className="text-orange-400">[</span>ADAPTIVE_INTERVAL_BURN<span className="text-orange-400">]</span>
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6 relative z-10">
+          <CardContent className="space-y-4 sm:space-y-6 relative z-10 px-3 sm:px-6">
             {isLoading ? (
               <div className="space-y-3">
                 <Skeleton className="h-4 w-full bg-orange-500/20" />
@@ -129,18 +129,18 @@ export default function FusionCoreDashboard() {
         } after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse`}>
           <div className={`absolute top-2 right-2 w-3 h-3 rounded-full animate-ping ${canFuseCollector ? 'bg-blue-400' : 'bg-purple-400'}`}></div>
           <div className={`absolute top-2 right-2 w-3 h-3 rounded-full ${canFuseCollector ? 'bg-blue-500' : 'bg-purple-500'}`}></div>
-          <CardHeader className="relative z-10">
-            <CardTitle className="text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
-              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
-                <TrendingUp className={`h-6 w-6 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)] ${canFuseCollector ? 'text-blue-400' : 'text-purple-400'}`} />
+          <CardHeader className="relative z-10 px-3 sm:px-6 pb-3 sm:pb-6">
+            <CardTitle className="text-lg sm:text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-2 sm:gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
+              <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40 flex-shrink-0">
+                <TrendingUp className={`h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)] ${canFuseCollector ? 'text-blue-400' : 'text-purple-400'}`} />
               </div>
-              FUSECOLLECTOR()
+              <span className="truncate">FUSECOLLECTOR()</span>
             </CardTitle>
-            <CardDescription className="font-mono tracking-wide text-gray-300">
+            <CardDescription className="font-mono tracking-wide text-gray-300 text-sm sm:text-base">
               <span className="text-orange-400">[</span>CLAIMS_BURNS_SENDS_MCLB<span className="text-orange-400">]</span>
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6 relative z-10">
+          <CardContent className="space-y-4 sm:space-y-6 relative z-10 px-3 sm:px-6">
             {isLoading ? (
               <div className="space-y-3">
                 <Skeleton className="h-4 w-full bg-orange-500/20" />
@@ -169,36 +169,36 @@ export default function FusionCoreDashboard() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-3">
                     {/* Step 1: Claims Fees */}
-                    <div className="bg-black/40 border-2 border-purple-500/60 rounded-lg p-3 hover:border-purple-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-400/40">
+                    <div className="bg-black/40 border-2 border-purple-500/60 rounded-lg p-2 sm:p-3 hover:border-purple-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-400/40 flex-shrink-0">
                           <span className="text-purple-400 font-mono font-bold text-xs">1</span>
                         </div>
-                        <span className="text-sm font-mono tracking-wide text-purple-400 font-medium">
+                        <span className="text-xs sm:text-sm font-mono tracking-wide text-purple-400 font-medium min-w-0">
                           <span className="text-orange-400">[</span>POL_FEES<span className="text-orange-400">]</span> Claims trading fees
                         </span>
                       </div>
                     </div>
 
                     {/* Step 2: Burns Tokens */}
-                    <div className="bg-black/40 border-2 border-orange-500/60 rounded-lg p-3 hover:border-orange-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-400/40">
+                    <div className="bg-black/40 border-2 border-orange-500/60 rounded-lg p-2 sm:p-3 hover:border-orange-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-400/40 flex-shrink-0">
                           <span className="text-orange-400 font-mono font-bold text-xs">2</span>
                         </div>
-                        <span className="text-sm font-mono tracking-wide text-orange-400 font-medium">
+                        <span className="text-xs sm:text-sm font-mono tracking-wide text-orange-400 font-medium min-w-0">
                           <span className="text-orange-400">[</span>TOKEN_BURN<span className="text-orange-400">]</span> Burns $LFD and $LBP
                         </span>
                       </div>
                     </div>
 
                     {/* Step 3: Sends MCLB */}
-                    <div className="bg-black/40 border-2 border-blue-500/60 rounded-lg p-3 hover:border-blue-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-400/40">
+                    <div className="bg-black/40 border-2 border-blue-500/60 rounded-lg p-2 sm:p-3 hover:border-blue-500/80 transition-all duration-300 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-400/40 flex-shrink-0">
                           <span className="text-blue-400 font-mono font-bold text-xs">3</span>
                         </div>
-                        <span className="text-sm font-mono tracking-wide text-blue-400 font-medium">
+                        <span className="text-xs sm:text-sm font-mono tracking-wide text-blue-400 font-medium min-w-0">
                           <span className="text-orange-400">[</span>MCLB_SEND<span className="text-orange-400">]</span> To Fusion Core
                         </span>
                       </div>
@@ -206,12 +206,12 @@ export default function FusionCoreDashboard() {
                   </div>
 
                   {/* Function Details */}
-                  <div className="bg-black/40 border-2 border-gray-500/60 rounded-lg p-3">
-                    <div className="flex items-center justify-center gap-3 text-sm font-mono tracking-wide text-gray-300">
-                      <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
-                        <Clock className="h-4 w-4 text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.8)]" />
+                  <div className="bg-black/40 border-2 border-gray-500/60 rounded-lg p-2 sm:p-3">
+                    <div className="flex items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono tracking-wide text-gray-300">
+                      <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40 flex-shrink-0">
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400 drop-shadow-[0_0_6px_rgba(249,115,22,0.8)]" />
                       </div>
-                      <span className="font-medium">
+                      <span className="font-medium text-center">
                         <span className="text-orange-400">[</span>1H_COOLDOWN<span className="text-orange-400">]</span> |
                         <span className="text-orange-400">[</span>MODIFIABLE<span className="text-orange-400">]</span>
                       </span>
@@ -226,66 +226,66 @@ export default function FusionCoreDashboard() {
 
       {/* Strategy Information */}
       <Card className="relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-orange-500/60 shadow-[0_0_25px_rgba(249,115,22,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/10 before:via-transparent before:to-orange-600/5 before:animate-pulse after:absolute after:top-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-orange-400/60 after:to-transparent after:animate-pulse">
-        <CardHeader className="relative z-10">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
-                <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40">
-                  <Settings className="h-6 w-6 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+        <CardHeader className="relative z-10 px-3 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg sm:text-xl font-mono font-bold tracking-wider text-orange-100 flex items-center gap-2 sm:gap-3 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">
+                <div className="p-1 bg-orange-500/20 rounded border border-orange-400/40 flex-shrink-0">
+                  <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
                 </div>
-                CHANGERATESTRATEGY()
+                <span className="truncate">CHANGERATESTRATEGY()</span>
               </CardTitle>
-              <CardDescription className="font-mono tracking-wide text-gray-300">
+              <CardDescription className="font-mono tracking-wide text-gray-300 text-xs sm:text-sm md:text-base">
                 <span className="text-orange-400">[</span>MULTISIG_CONTROLLED_ALLOCATION<span className="text-orange-400">]</span>
               </CardDescription>
             </div>
             {!isLoading && (
-              <Badge className="bg-green-500/20 text-green-400 border-2 border-green-500/60 px-4 py-2 text-base font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(34,197,94,0.4)] animate-pulse">
+              <Badge className="bg-green-500/20 text-green-400 border-2 border-green-500/60 px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(34,197,94,0.4)] animate-pulse self-start sm:self-auto">
                 {currentPlan === 'Custom' ? '[CUSTOM_PLAN]' : `[PLAN_${currentPlan}]`}
               </Badge>
             )}
           </div>
         </CardHeader>
-        <CardContent className="relative z-10">
+        <CardContent className="relative z-10 px-3 sm:px-6">
           {isLoading ? (
             <div className="space-y-3">
               <Skeleton className="h-4 w-full bg-orange-500/20" />
               <Skeleton className="h-4 w-3/4 bg-orange-500/20" />
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
 
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-3 sm:gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-mono font-bold text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.8)]">{currentStrategy.lfd}%</div>
-                  <div className="text-sm font-mono tracking-wide text-gray-300 mt-2">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-mono font-bold text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.8)]">{currentStrategy.lfd}%</div>
+                  <div className="text-xs sm:text-sm font-mono tracking-wide text-gray-300 mt-1 sm:mt-2">
                     <span className="text-orange-400">[</span>BURN_$LFD<span className="text-orange-400">]</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-mono font-bold text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">{currentStrategy.lbp}%</div>
-                  <div className="text-sm font-mono tracking-wide text-gray-300 mt-2">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-mono font-bold text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">{currentStrategy.lbp}%</div>
+                  <div className="text-xs sm:text-sm font-mono tracking-wide text-gray-300 mt-1 sm:mt-2">
                     <span className="text-orange-400">[</span>BURN_$LBP<span className="text-orange-400">]</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-mono font-bold text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]">{currentStrategy.dao}%</div>
-                  <div className="text-sm font-mono tracking-wide text-gray-300 mt-2">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-mono font-bold text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]">{currentStrategy.dao}%</div>
+                  <div className="text-xs sm:text-sm font-mono tracking-wide text-gray-300 mt-1 sm:mt-2">
                     <span className="text-orange-400">[</span>DAO_RESERVE<span className="text-orange-400">]</span>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
                 {/* Plan A */}
-                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-purple-500/60 rounded-lg p-4 text-center hover:border-purple-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-purple-500/10 before:via-transparent before:to-purple-600/5 before:animate-pulse">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-400/40">
-                      <span className="text-purple-400 font-mono font-bold text-sm">A</span>
+                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-purple-500/60 rounded-lg p-3 sm:p-4 text-center hover:border-purple-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-purple-500/10 before:via-transparent before:to-purple-600/5 before:animate-pulse">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-400/40">
+                      <span className="text-purple-400 font-mono font-bold text-xs sm:text-sm">A</span>
                     </div>
                   </div>
-                  <h5 className="font-mono font-semibold text-sm text-purple-400 mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]">PLAN_A</h5>
-                  <div className="space-y-2 text-xs font-mono tracking-wide">
+                  <h5 className="font-mono font-semibold text-xs sm:text-sm text-purple-400 mb-2 sm:mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(168,85,247,0.6)]">PLAN_A</h5>
+                  <div className="space-y-1 sm:space-y-2 text-xs font-mono tracking-wide">
                     <div className="text-orange-400">45% BURN $LFD</div>
                     <div className="text-blue-400">5% BURN $LBP</div>
                     <div className="text-green-400">50% DAO RESERVE</div>
@@ -293,14 +293,14 @@ export default function FusionCoreDashboard() {
                 </div>
 
                 {/* Plan B */}
-                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-blue-500/60 rounded-lg p-4 text-center hover:border-blue-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-blue-500/10 before:via-transparent before:to-blue-600/5 before:animate-pulse">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-400/40">
-                      <span className="text-blue-400 font-mono font-bold text-sm">B</span>
+                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-blue-500/60 rounded-lg p-3 sm:p-4 text-center hover:border-blue-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-blue-500/10 before:via-transparent before:to-blue-600/5 before:animate-pulse">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-400/40">
+                      <span className="text-blue-400 font-mono font-bold text-xs sm:text-sm">B</span>
                     </div>
                   </div>
-                  <h5 className="font-mono font-semibold text-sm text-blue-400 mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">PLAN_B</h5>
-                  <div className="space-y-2 text-xs font-mono tracking-wide">
+                  <h5 className="font-mono font-semibold text-xs sm:text-sm text-blue-400 mb-2 sm:mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]">PLAN_B</h5>
+                  <div className="space-y-1 sm:space-y-2 text-xs font-mono tracking-wide">
                     <div className="text-orange-400">50% BURN $LFD</div>
                     <div className="text-blue-400">0% BURN $LBP</div>
                     <div className="text-green-400">50% DAO RESERVE</div>
@@ -308,14 +308,14 @@ export default function FusionCoreDashboard() {
                 </div>
 
                 {/* Plan C */}
-                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-green-500/60 rounded-lg p-4 text-center hover:border-green-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(34,197,94,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-green-500/10 before:via-transparent before:to-green-600/5 before:animate-pulse">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center border border-green-400/40">
-                      <span className="text-green-400 font-mono font-bold text-sm">C</span>
+                <div className="group relative overflow-hidden bg-black/40 backdrop-blur-sm border-2 border-green-500/60 rounded-lg p-3 sm:p-4 text-center hover:border-green-500/80 transition-all duration-700 hover:scale-105 hover:shadow-[0_0_25px_rgba(34,197,94,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-green-500/10 before:via-transparent before:to-green-600/5 before:animate-pulse">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500/20 rounded-full flex items-center justify-center border border-green-400/40">
+                      <span className="text-green-400 font-mono font-bold text-xs sm:text-sm">C</span>
                     </div>
                   </div>
-                  <h5 className="font-mono font-semibold text-sm text-green-400 mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]">PLAN_C</h5>
-                  <div className="space-y-2 text-xs font-mono tracking-wide">
+                  <h5 className="font-mono font-semibold text-xs sm:text-sm text-green-400 mb-2 sm:mb-3 tracking-wider drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]">PLAN_C</h5>
+                  <div className="space-y-1 sm:space-y-2 text-xs font-mono tracking-wide">
                     <div className="text-orange-400">0% BURN $LFD</div>
                     <div className="text-blue-400">0% BURN $LBP</div>
                     <div className="text-green-400">100% DAO TREASURY</div>
